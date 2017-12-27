@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html ng-app="index">
+<head>
+	<meta charset="UTF-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Transvalpo</title>
+
+		<!-- FONTS -->
+		<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Paprika' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
+
+		<!--Font awesome -->
+		<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="css/estilos.css">
+
+        <!-- AngularJS -->
+        <script src="js/angular.js"></script>
+
+		<!-- Bootstrap -->
+		<script src="js/ui-bootstrap-tpls-0.14.3.min.js"></script>
+
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+        <!-- Google Maps -->
+        <script src="http://maps.google.com/maps/api/js?libraries=geometry"></script>
+
+        <!-- angular-google-maps -->
+        <script src="js/lodash.underscore.min.js"></script>
+        <script src="js/angular-google-maps.min.js"></script>
+
+        <!-- Custom angular module -->
+        <script src="js/index.js"></script>
+		<script src="js/vargmaps.js"></script>
+		<script src="js/puntos.js"></script>
+
+
+	<link href="http://vjs.zencdn.net/5.2.3/video-js.css" rel="stylesheet">
+
+	<!-- If you'd like to support IE8 -->
+	<script src="http://vjs.zencdn.net/ie8/1.1.0/videojs-ie8.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+	<header class="row">
+		<nav class="navbar navbar-default menu_principal" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle"  ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
+					<span class="sr-only"> Desplegar/ Ocultar menu</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="index.html" class="navbar-brand fuente_titulo">TransValpo</a>
+				<p class="navbar-text navbar-left sub_titulo hidden-xs">La ciudad puerto a tu alcance</p>
+			</div>
+			<!-- Aquí comienza el menu -->
+			<div uib-collapse="isCollapsed" class="navbar-collapse bs-js-navbar-collapse" ng-controller="ModalDemoCtrl" >
+				<ul class="nav navbar-nav navbar-right" ng-controller="DropdownCtrl">
+					<li><a class="btn" href="#rutas_turisticas"><span class="glyphicon glyphicon-search"></span> Rutas</a></li>
+					<li ng-controller="PopoverDemoCtrl" class="hidden-xs">
+						<a uib-popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" type="button" class="btn" popover-placement="bottom"><span class="glyphicon glyphicon-question-sign"></span> Tutorial</a>
+						<script type="text/ng-template" id="myPopoverTemplate.html">
+								<div>{{dynamicPopover.content}}</div>
+								<div class="embed-responsive embed-responsive-16by9">
+									<video id="my-video" class="video-js" controls preload="auto" width="640" height="264" data-setup="{}" style="padding: 6px;">
+										<source src="vid/Milky Chance - Stolen Dance Album Version.mp4" type='video/mp4'>
+										<!-- para colocar una lista de videos solo colocar otro source-->
+									</video>
+								</div>
+						</script>
+					</li>
+					<li><a id="single-button" class="btn" ng-click="puntos_interes()" ng-controller="puntoController"><span class="glyphicon glyphicon-star-empty" ></span>Puntos de interés</a></li>
+					<li><a class="btn" ng-click="open()"><span class="glyphicon glyphicon-wrench" ></span> Contáctanos</a></li>
+				</ul>
+				<script type="text/ng-template" id="myModalContent.html">
+					<div class="modal-body">
+						<form>
+							<h3 class="titulo_form">Adelante! Háblanos <span class="glyphicon glyphicon-send"></span></H3>
+							<div class="form-group">
+								<label for="nombre_cont">Nombre completo:</label>
+								<input type="text" class="form-control" placeholder="Ej. Juan Perez" id="nombre_cont" ng-model="data.nombre">
+							</div>
+							<div class="form-group">
+								<label for="email_cont">Email:</label>
+								<input type="text" class="form-control" placeholder="Ej. jperez@tuemail.com" id="email_cont" ng-model="data.correo">
+							</div>
+							<div class="form-group">
+								<label for="comentario_cont">Comentario:</label>
+								<textarea class="form-control" rows="3" placeholder="¿Que nos quieres decir?" id="comentario_cont" ng-model="data.comentario"></textarea>
+							</div>
+							<button type="submit" class="btn btn-default" ng-click="submitCorreo(data)">Enviar<span class="glyphicon glyphicon-ok" ></span></button>
+						</form>
+					</div>
+				</script>
+			</div>
+		</nav>
+	</header>
+	<div ng-controller ="mapController">
+		<section class="row">
+			<div class="col-xs-12 col-sm-4 col-md-3 col-lg-3" style="border: 1px solid silver; height:500px;">
+				<form name="form_buscar">
+					<!--<a name="formulario"></a> <!-- Ancla al formulario -->
+					<h3 class="titulo_form">Planifica tu destino <span class="glyphicon glyphicon-road"></span></H3>
+					<div class="form-group">
+						<label for="origen">Ingresar Origen:</label>
+						<input type="text" class="form-control" placeholder="¿Donde desea partir?" id="origen" ng-model='formData.origen' required>
+					</div>
+					<div class="form-group">
+						<label for="destino">Ingresar Destino</label>
+						<input type="text" class="form-control" placeholder="¿Donde desea llegar?" id="destino" ng-model='formData.destino' required >
+					</div>
+					<div class="form-group">
+						<label for="fecha">Hora</label>
+						<uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+					</div>
+					<button type="submit" class="btn btn-default" ng-click='submitForm(formData)'><span class="glyphicon glyphicon-search"></span> Buscar </button>
+					<button type="submit" class="btn btn-default" ng-click='borrar_rutas()'><span class="glyphicon glyphicon-remove"></span> Borrar </button>
+				</form>
+			</div>
+			<div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 mapa">
+				<a name="ancla_mapa"></a>
+				<google-map center="map.center"
+							zoom="map.zoom"
+							draggable="true"
+							options="map.options"
+							control="map.control">
+					<markers models="lugares" coords="'last_known_location'"></markers>
+					<markers models="marker1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="marker2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="marker3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="marker4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="ruta1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="ruta2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="super1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="super2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="super3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="super4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco5" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco6" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="banco7" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hotel1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hotel2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hotel3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hotel4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal5" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="hostal6" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant1" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant2" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant3" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant4" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant5" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant6" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant7" coords="'coords'" icon="'icon'" id="'id'"></markers>
+					<markers models="restaurant8" coords="'coords'" icon="'icon'" id="'id'"></markers>
+				</google-map>
+			</div>
+		</section>
+		<section class="row">
+			<div>
+			</div>
+		</section>
+		<!-- Transición -->
+		<section class="row">
+			<div class="jumbotron">
+				<div class="container-fluid">
+					<h2 class="titulo_transicion"><span class="glyphicon glyphicon-triangle-bottom"></span>Este es el novesodo planificador de Valparaíso<span class="glyphicon glyphicon-triangle-bottom"></span></h2>
+					<p class="texto_transicion">Ya no existen pretextos, para no conocer Valparaíso, si lo quieres.. puedes!</p>
+			</div>
+			</div>
+		</section>
+		<section class="row">
+			<!-- Este apartado es para la búsqueda -->
+			<a name="rutas_turisticas"></a>
+			<div name="rutas_estaticas" class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<h3 class="titulo_acordion">Rutas turísticas <span class="glyphicon glyphicon-fire"></span></H3>
+				<div class="panel panel-default">
+					<!-- List group -->
+					<ul class="list-group" style="list-style: none;">
+						<a href="#ancla_mapa" type="button" class="list-group-item" ng-click='submitRutas(1)'><li >Ruta 1</li></a>
+						<a href="#ancla_mapa" type="button" class="list-group-item" ng-click='submitRutas(2)'><li >Ruta 2</li></a>
+						<a href="#ancla_mapa" type="button" class="list-group-item" ng-click='submitRutas(3)'><li >Ruta 3</li></a>
+						<a href="#ancla_mapa" type="button" class="list-group-item"><li >Ruta 4</li></a>
+					</ul>
+				</div>
+			</div>
+			<!-- Este apartado es para los resultados -->
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-controller="AccordionDemoCtrl">
+				<h3 class="titulo_acordion">Rutas ordenadas por: <span class="glyphicon glyphicon-map-marker"></span></H3>
+				<uib-accordion close-others="true">
+					<uib-accordion-group ng-repeat="group in groups">
+						<div style="height:300px; overflow-y:scroll;">
+							<uib-accordion-heading>
+								<span ng-click="opened(group, $index)">{{group.title}}</span>
+							</uib-accordion-heading>
+							<div class="list-group" ng-repeat="item in group.items" ng-click="marcador_resultados(item['item-objeto'])">
+								<a href="#ancla_mapa" class="list-group-item active">
+									<h4 class="list-group-item-heading">Número de micro: {{item['item-micro']}}</h4>
+									<p class="list-group-item-text">Precio: {{item['item-precio']}} pesos </br> Distancia a pie: {{item['item-distancia']}} m </br> Frecuencia: cada {{item['item-frecuencia']}} minutos</p>
+								</a>
+							</div>
+						</div>
+					</uib-accordion-group>
+				</uib-accordion>
+			</div>
+			<!-- Este apartado es para lugares recomendados -->
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 contenido_tendencias">
+				<h3><span class="glyphicon glyphicon-star"></span> Lugares recomendados </h3>
+				<div ng-controller="Carousel" >
+					<uib-carousel interval="myInterval">
+						<uib-slide ng-repeat="slide in slides" active="slide.active">
+							<button ng-click="marcador($index)">
+								<img class="img-thumbnail" ng-src="{{slide.image}}" style="margin:auto;">
+								<div class="carousel-caption">
+									<h4>Lugar {{$index +1}}</h4>
+									<p>{{slide.text}}</p>
+								</div>
+							</button>
+						</uib-slide>
+					</uib-carousel>
+				</div>
+				<div ng-controller="Carousel2" style="padding-bottom: 10px;">
+					<h3><span class="glyphicon glyphicon-check"></span> Lugares más visitados</h3>
+					<uib-carousel interval="myInterval">
+						<uib-slide ng-repeat="slide in slides" active="slide.active">
+							<button ng-click="marcador2($index)">
+								<img class="img-thumbnail" ng-src="{{slide.image}}" style="margin:auto;">
+								<div class="carousel-caption">
+									<h4>Lugar {{$index +1}}</h4>
+									<p>{{slide.text}}</p>
+								</div>
+							</button>
+						</uib-slide>
+					</uib-carousel>
+				</div>
+			</div>
+		</section>
+	</div>
+	<footer class="row">
+		<div class="jumbotron">
+			<div class="container-fluid" style="padding-top: 10px;">
+				<div class="col-xs-12 col sm 6 col-md-6 col-lg-4">
+					<h3 class="titulo_links"> Links recomendados <span class="glyphicon glyphicon-globe"></span></h3>
+					<a class="btn" href="http://www.municipalidaddevalparaiso.cl/" >Municipalidad de Valparaíso</a></br>
+					<a class="btn" href="http://www.puertovalparaiso.cl/index.html" >Puerto de Valparaíso</a></br>
+					<a class="btn" href="http://www.teatromunicipal.cl/" >Teatro de Valparaíso</a></br>
+					<a class="btn" href="https://www.facebook.com/eventos.munivalpo.7" >Eventos en Valparaíso</a></br>
+					<a class="btn" href="http://www.municipalidaddevalparaiso.cl/img/MAPA%20%20VALPARAISO%20cota%20segura-1a.JPG" >Guía de evacuación segura</a></br>
+					<a class="btn" href="http://www.municipalidaddevalparaiso.cl/archivos/calendario_cruceros.pdf" >Calendario de Cruceros</a></br>
+					<a class="btn" href="http://www.museobaburizza.cl/" >Museo de Bellas Artes</a></br>
+					<a class="btn" href="http://www.fundacionneruda.org/es/la-sebastiana/informacion-visita" >Museo de la sebastiana de Pablo Neruda</a></br>
+				</div>
+				<div class="col-xs-9 col sm 6 col-md-6 col-lg-4">
+					<h3 class="titulo_links"> Redes sociales  <span class="glyphicon glyphicon-thumbs-up"></span></h3>
+					<a class="btn btn-primary" href="https://www.facebook.com/transvalpo" style="margin:3px;><i class="fa fa-facebook fa-fw-2x"></i> Me gusta</a>
+					<a class="btn btn-danger" href="#" style="margin:3px;><i class="fa fa-google-plus fa-fw-2x"></i>Me gusta +1</a>
+					<a class="btn btn-default" href="#" style="margin:3px;"><i class="fa fa-twitter fa-fw-2x"></i>Síguenos!</a>
+				</div>
+				<div class="col-xs-12 col sm 6 col-md-6 col-lg-4">
+					<h3 class="titulo_links"> Herramientas utilizadas <span class="glyphicon glyphicon-wrench"></span></h3>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 10px;">
+						<center>
+							<img src="img/herramientas/angular.png" style="height:100px; width: 100px;">
+						</center>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 10px;">
+						<center>
+							<img src="img/herramientas/bootstrap.png" style="height:100px; width: 100px;" align=center>
+						</center>
+					</div>
+				</div>
+			</div>
+			<p class="subtitulo_footer"> Todos los derechos reservados ®</p>
+		</div>
+	</footer>
+</div>
+</body>
+</html>

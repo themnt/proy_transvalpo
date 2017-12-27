@@ -1,0 +1,133 @@
+body{
+	background-color:#f0f0f0;
+}
+footer{
+margin:0;
+padding:0;
+}
+
+/* Este le agrega la fuente Lobster al titulo del navbar solamente*/
+a.fuente_titulo 	{
+	font-family: 'Lobster', cursive; 
+	font-size:25px;
+}
+p.sub_titulo{
+	padding-top:6px;
+	font-family: 'Paprika', cursive;
+	font-size:10px;
+}
+nav.menu_principal{
+margin-bottom:0px;
+}
+.angular-google-map-container{
+    position: absolute; 
+    width:100%; 
+    height: 100%; 
+    margin:0;
+    padding: 0;   
+    z-index: 1;
+}
+div.contenido_tendencias{
+	margin:0;
+	padding:2;
+	font-family: 'Lobster', cursive;
+	text-align: center;
+	border-radius: 0px 0px 0px 0px;
+	-moz-border-radius: 0px 0px 0px 0px;
+	-webkit-border-radius: 0px 0px 0px 0px;
+	border-left:2px solid #c2c2c2;
+	border-bottom:2px solid #c2c2c2;
+}
+div.jumbotron{
+	background-color:#433e5e;
+	margin:0;
+	padding:0;
+}
+form{
+	font-family: 'Lobster', cursive;
+}
+h3.titulo_form{
+	text-align: center;
+}
+label{
+	font-weight: 200; 
+}
+h2.titulo_transicion{
+	font-family: 'Lobster', cursive;
+	color:#ffffff;
+	text-align: center;
+}
+p.texto_transicion{
+	font-family: 'Lobster', cursive;
+	color:#ffffff;
+	text-align: center;
+}
+h3.titulo_footer{
+	font-family: 'Lobster', cursive;
+	color:#ffffff;
+	text-align:center;
+}
+h3.titulo_footer2{
+	font-family: 'Lobster', cursive;
+	text-align:center;
+}
+h3.titulo_acordion{
+	font-family: 'Lobster', cursive;
+	text-align:center;
+}
+h3.titulo_links{
+	margin-top:0px;
+	font-family: 'Lobster', cursive;
+	text-align:center;
+	color:#ffffff;
+	}
+p.letra_agradecimientos{
+	margin-top:0px;
+	font-family: 'Lobster', cursive;
+	color:#ffffff;
+	text-align: justify;
+}
+p.subtitulo_footer{
+	font-family: 'Lobster', cursive;
+	text-align:center;
+	color:#ffffff;
+	font-size:15px;
+	margin:0;
+}
+p.comentario_footer{
+	font-family: 'Lobster', cursive;
+	text-align:center;
+	font-size:15px;
+	margin:0;
+	font-weight: 150; 
+}
+
+.popover {
+	min-width: 460px;
+}
+
+/*-- media Querie--*/
+/*Solo para celulares */
+@media screen and (max-width:768px){ 
+	div.mapa{
+		height:300px;
+		margin:0;
+		padding:0;
+		border-radius: 0px 0px 0px 0px;
+		-moz-border-radius: 0px 0px 0px 0px;
+		-webkit-border-radius: 0px 0px 0px 0px;
+		border: 2px solid #c2c2c2;
+	}
+}
+/*Para todo menos los celulares*/
+@media screen and (min-width:768px){
+	div.mapa{
+		height:500px;
+		margin:0;
+		padding:0;
+		border-radius: 0px 0px 0px 0px;
+		-moz-border-radius: 0px 0px 0px 0px;
+		-webkit-border-radius: 0px 0px 0px 0px;
+		border: 2px solid #c2c2c2;
+	}				
+}				
